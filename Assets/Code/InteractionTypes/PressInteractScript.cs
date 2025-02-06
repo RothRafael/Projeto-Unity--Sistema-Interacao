@@ -17,6 +17,7 @@ public class ButtonController : Interactable
     {
         startPos = button.position;
         audioManager = GetComponent<EntityAudioManager>();
+        GetMeshRenderers();
     }
 
     private void FixedUpdate()
@@ -59,6 +60,7 @@ public class ButtonController : Interactable
                 button.position = Vector3.MoveTowards(button.position, startPos, speed * Time.fixedDeltaTime);
                 break;
         }
+
     }
     protected override void StartInteract()
     {

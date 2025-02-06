@@ -52,6 +52,7 @@ public class ScrollInteractScript : Interactable
     private void HandleScroll(int scroll)
     {
         accumulatedScroll -= scroll * scrollSensitivity;
+        totalScroll = (scroll * -1) / scrollIncrementRate;
 
         // Bujiganga
 
@@ -61,7 +62,6 @@ public class ScrollInteractScript : Interactable
         if (Mathf.Abs(accumulatedScroll) >= transitionPoint)
         {
             //
-            totalScroll += (scroll / scrollIncrementRate) * -1;
             //
             lastStableAngle = targetAngle; // Save the last snapped position
             float direction = Mathf.Sign(accumulatedScroll);

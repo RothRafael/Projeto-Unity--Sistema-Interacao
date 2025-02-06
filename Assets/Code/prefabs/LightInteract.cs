@@ -3,9 +3,9 @@ using UnityEngine;
 public class LightInteract : MonoBehaviour
 {
     [Header("Light Settings")]
-    [SerializeField] private float lightIntensity = 1f;
-    [SerializeField] private float lightRange = 1f;
-    [SerializeField] private Color lightColor = Color.white;
+    [SerializeField] public float lightIntensity;
+    [SerializeField] public float lightRange;
+    [SerializeField] public Color lightColor;
 
     [SerializeField] private Light lightComponent;
 
@@ -16,7 +16,7 @@ public class LightInteract : MonoBehaviour
 
     private void InitializeLight()
     {
-        lightIntensity = lightComponent.intensity;
+        // lightIntensity = lightComponent.intensity;
         lightRange = lightComponent.range;
         lightColor = lightComponent.color;
     }

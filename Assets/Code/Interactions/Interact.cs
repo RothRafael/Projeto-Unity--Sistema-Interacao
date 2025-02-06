@@ -1,7 +1,12 @@
 using UnityEngine;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public abstract class Interactable : MonoBehaviour
 {
+    public bool isOverlapping = false;
+    public List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
+
     public enum InteractionType
     {
         Press, Hold, Scroll, Move
@@ -12,11 +17,39 @@ public abstract class Interactable : MonoBehaviour
     public void BaseStartInteract(int scroll) { StartInteract(scroll); }
     public void BaseStopInteract() { StopInteract(); }
 
-    // Classe que implementa faz o override
     protected virtual void StartInteract() { }
-
-    // Classe que implementa faz o override
     protected virtual void StopInteract() { }
-    //Scroll
     protected virtual void StartInteract(int scroll) { }
+
+    protected void GetMeshRenderers()
+    {
+        meshRenderers.AddRange(GetComponentsInChildren<MeshRenderer>());
+    }
+
+    public void SetOutlineMaterial(Material material)
+    {
+        foreach (MeshRenderer meshRenderer in meshRenderers)
+        {
+            List<Material> materials = new List<Material>(meshRenderer.materials);
+            if (materials.Count < 2)
+            {
+                materials.Add(material);
+                meshRenderer.materials = materials.ToArray();
+            }
+        }
+    }
+
+    public void RemoveOutlineMaterial(Material material)
+    {
+        foreach (MeshRenderer meshRenderer in meshRenderers)
+        {
+            List<Material> materials = new List<Material>(meshRenderer.materials);
+            if (materials.Contains(material))
+            {
+            materials.Remove(material);
+            meshRenderer.materials = materials.ToArray();
+            }
+        }
+        Debug.Log("Removed");
+    }
 }

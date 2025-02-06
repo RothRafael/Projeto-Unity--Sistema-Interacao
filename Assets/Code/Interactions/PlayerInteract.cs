@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
@@ -20,6 +21,7 @@ public class PlayerInteract : MonoBehaviour
         if (!isInteracting)
         {
             DetectInteractable();
+            
         }
         
         if (currentInteractable != null)
@@ -43,7 +45,7 @@ public class PlayerInteract : MonoBehaviour
             }
         }
         else
-        {
+        {   
             currentInteractable = null;
         }
     }
