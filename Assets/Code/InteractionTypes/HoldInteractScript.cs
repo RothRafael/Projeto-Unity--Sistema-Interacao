@@ -1,12 +1,15 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HoldInteractScript : Interactable
 {
     // Wheight == Speed
     [SerializeField] private float Weight;
+    [SerializeField] private float throwForce = 10f;
     [SerializeField] private float distanceTreshold = .3f;
     public bool isHolding = false;
+    public bool canThrow = true;
     private Rigidbody rb;
     private Transform PlayerHand;
     private void Start()
@@ -24,6 +27,10 @@ public class HoldInteractScript : Interactable
     }
     private void FixedUpdate()
     {
+        if(canThrow && isHolding && Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            Throw();
+        }
         if (isHolding)
         {
             PlayerHold();
@@ -79,5 +86,11 @@ public class HoldInteractScript : Interactable
     private void callFunction()
     {
         Debug.Log("Pressing the cube");
+    }
+    public void Throw()
+    {
+        rb.useGravity = true;
+        rb.AddForce(PlayerHand.transform.forward * throwForce, ForceMode.Impulse);
+        isHolding = false;
     }
 }

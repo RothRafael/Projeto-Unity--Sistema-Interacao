@@ -4,18 +4,20 @@ using UnityEngine.UI;
 public class UiManager : MonoBehaviour
 {
     [SerializeField] PlayerInteract playerInteractScript;
-    [SerializeField] RectTransform crosshair;
+    [SerializeField] RawImage crosshair;
+    [SerializeField] Texture2D crosshairInteract;
+    [SerializeField] Texture2D crosshairInteractYes;
     [SerializeField] float crosshairInteractSize;
     private Vector3 crosshairInteractOriginalSize;
 
     private void Start() {
-        crosshairInteractOriginalSize = crosshair.localScale;
+        crosshair.texture = crosshairInteract;
     }
     private void FixedUpdate() {
         if(playerInteractScript.currentInteractable != null) {
-            crosshair.localScale = crosshairInteractOriginalSize * crosshairInteractSize;
+            crosshair.texture = crosshairInteractYes;
         } else {
-            crosshair.localScale = crosshairInteractOriginalSize;
+            crosshair.texture = crosshairInteract;
         }
     }
 }

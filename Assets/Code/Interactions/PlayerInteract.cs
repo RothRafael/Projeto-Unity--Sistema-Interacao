@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
+    [Space]
+    [SerializeField] private KeyCode interactKey = KeyCode.Mouse0;
+    [Space]
+    
     [SerializeField] private float interactDistance = 2f; // Distance for interaction
     [SerializeField] private LayerMask interactLayer; // LayerMask for interactable objects
 
@@ -72,7 +76,7 @@ public class PlayerInteract : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, currentInteractable.transform.position);
 
-        if (Input.GetKey(KeyCode.E) && distance <= interactDistance)
+        if (Input.GetKey(interactKey) && distance <= interactDistance)
         {
             if (!isInteracting)
             {
@@ -80,7 +84,7 @@ public class PlayerInteract : MonoBehaviour
                 isInteracting = true;
             }
         }
-        else if (Input.GetKeyUp(KeyCode.E) || distance > interactDistance)
+        else if (Input.GetKeyUp(interactKey) || distance > interactDistance)
         {
             if (isInteracting)
             {
@@ -92,7 +96,7 @@ public class PlayerInteract : MonoBehaviour
 
     private void HandlePressInteraction()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(interactKey))
         {
             currentInteractable.BaseStartInteract();
         }

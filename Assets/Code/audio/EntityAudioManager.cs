@@ -42,9 +42,9 @@ public class EntityAudioManager : MonoBehaviour
             audioObject.transform.SetParent(transform);
             gunAudioSources[i] = audioObject.AddComponent<AudioSource>();
             gunAudioSources[i].playOnAwake = false;
+            CopyAudioSourceSettings(mainAudioSource, gunAudioSources[i]);
         }
     }
-
     void RandomizePitch(AudioSource source)
     {
         source.pitch = Random.Range(pitchRange.x, pitchRange.y);
@@ -97,7 +97,7 @@ public class EntityAudioManager : MonoBehaviour
         // Get the next available gun AudioSource
         AudioSource source = gunAudioSources[gunAudioIndex];
         source.clip = gunShotClips[Random.Range(0, gunShotClips.Length)];
-        
+
         RandomizePitch(source);
         source.Play();
 
@@ -117,4 +117,26 @@ public class EntityAudioManager : MonoBehaviour
         Debug.Log("Gun Empty Clips: " + gunEmptyClips.Length);
         Debug.Log("Stop Clips: " + stopClips.Length);
     }
+    AudioSource CopyAudioSourceSettings(AudioSource source, AudioSource target)
+    {
+        target.transform.position = source.transform.position;
+        target.outputAudioMixerGroup = source.outputAudioMixerGroup;
+        target.bypassEffects = source.bypassEffects;
+        target.bypassListenerEffects = source.bypassListenerEffects;
+        target.bypassReverbZones = source.bypassReverbZones;
+        target.priority = source.priority;
+        target.volume = source.volume;
+        target.pitch = source.pitch;
+        target.panStereo = source.panStereo;
+        target.spatialBlend = source.spatialBlend;
+        target.reverbZoneMix = source.reverbZoneMix;
+        target.dopplerLevel = source.dopplerLevel;
+        target.spread = source.spread;
+        target.rolloffMode = source.rolloffMode;
+        target.minDistance = source.minDistance;
+        target.maxDistance = source.maxDistance;
+
+        return target;
+    }
+
 }

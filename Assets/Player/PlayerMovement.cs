@@ -13,10 +13,13 @@ public class PlayerMovement : MonoBehaviour
 
     #region Mouse Look Settings
     [Header("Mouse Look Settings")]
+    [SerializeField] private bool canHeadBob = true;
     [SerializeField] private float mouseSensitivity = 100f;
     [SerializeField] private float cameraZRotationSense = 5f;
     [SerializeField] private float cameraZRotationMovementSense = 5f;
     [SerializeField] private float cameraZDamping = 5f;
+    [SerializeField] [Range(0, 6)] private float cameraBobSpeed = 0.1f;
+    [SerializeField] [Range(0, 0.2f)] private float cameraBobAmmount = 0.1f;
     [SerializeField] private Transform cameraTransform;
     #endregion
 
@@ -84,6 +87,8 @@ public class PlayerMovement : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
 
         // Atualiza rotação vertical e limita para evitar olhar para trás
         xRotation -= mouseY;
@@ -93,6 +98,16 @@ public class PlayerMovement : MonoBehaviour
         float targetZRotation = -mouseX * cameraZRotationSense;
         targetZRotation += horizontal * cameraZRotationMovementSense;
         zRotation = Mathf.Lerp(zRotation, targetZRotation, Time.deltaTime * cameraZDamping);
+
+        // Sensação de passos ao se mover SEN
+        if (canHeadBob && (horizontal != 0 || vertical != 0))
+        {
+            float step = Mathf.Sin(Time.time * Mathf.PI * cameraBobSpeed) * cameraBobAmmount;
+            Debug.Log(step);
+            Vector3 localPosition = cameraTransform.localPosition;
+            localPosition.y = step + 0.526f;
+            cameraTransform.localPosition = localPosition;
+        }
 
         // Aplica as rotações na câmera e no jogador
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, zRotation);
@@ -161,8 +176,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isCrouching = true;
             AdjustColliderHeight();
-        } 
-        if(isCrouching && Input.GetKeyUp(KeyCode.LeftControl))
+        }
+        if (isCrouching && Input.GetKeyUp(KeyCode.LeftControl))
         {
             isCrouching = false;
             AdjustColliderHeight();
